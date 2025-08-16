@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'inventory',
     'meals',
     'users',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
