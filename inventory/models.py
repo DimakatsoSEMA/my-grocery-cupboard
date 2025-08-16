@@ -8,7 +8,7 @@ class Location(models.TextChoices):
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
-    quantity = models.FloatField()
+    quantity = models.FloatField(default=0)
     unit = models.CharField(max_length=50)  # e.g., grams, ml, pieces
     location = models.CharField(max_length=50, choices=Location.choices)
     added_by = models.ForeignKey(User, on_delete=models.CASCADE)
