@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'meals',
     'users',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 #Custom user model
