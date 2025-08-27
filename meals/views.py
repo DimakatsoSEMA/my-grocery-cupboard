@@ -9,9 +9,6 @@ class MealListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Meal.objects.filter(created_by=self.request.user)
 
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
-
 
 class MealRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MealSerializer
