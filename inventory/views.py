@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import Item
 from .serializers import ItemSerializer
 from django.db.models import F
+from collections import defaultdict
 
 class ItemListCreateView(generics.ListCreateAPIView):
     serializer_class = ItemSerializer
