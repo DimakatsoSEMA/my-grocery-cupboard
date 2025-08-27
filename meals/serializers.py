@@ -23,13 +23,12 @@ class MealSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients', [])
-        # Create the meal with the current user
-        meal = Meal.objects.create(created_by=self.context['request'].user, **validated_data)
+        # created_by will come from context (current user)
+        user = self.context['request'].user
+        meal = Meal.objects.create(created_by=user, **validated_data)
 
-        # Create each MealIngredient
         for ingredient_data in ingredients_data:
-            item = ingredient_data.pop('item')  # extract item instance
-            MealIngredient.objects.create(meal=meal, item=item, **ingredient_data)
+            MealIngredient.objects.create(meal=meal, **ingredient_data)
 
         return meal
 
@@ -41,11 +40,9 @@ class MealSerializer(serializers.ModelSerializer):
         instance.is_favorite = validated_data.get('is_favorite', instance.is_favorite)
         instance.save()
 
-        # Clear existing ingredients and recreate
+        # Replace ingredients
         instance.mealingredient_set.all().delete()
         for ingredient_data in ingredients_data:
-            item = ingredient_data.pop('item')
-            MealIngredient.objects.create(meal=instance, item=item, **ingredient_data)
+            MealIngredient.objects.create(meal=instance, **ingredient_data)
 
         return instance
-
