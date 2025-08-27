@@ -4,13 +4,14 @@ from inventory.models import Item
 
 class MealIngredientSerializer(serializers.ModelSerializer):
     item_name = serializers.CharField(source='item.name', read_only=True)
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())  
 
     class Meta:
         model = MealIngredient
         fields = ['id', 'item', 'item_name', 'quantity_needed', 'unit']
 
 class MealSerializer(serializers.ModelSerializer):
-    ingredients = MealIngredientSerializer(many=True)  
+    ingredients = MealIngredientSerializer(many=True)
 
     class Meta:
         model = Meal
@@ -19,12 +20,8 @@ class MealSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients', [])
-        validated_data['created_by'] = self.context['request'].user
-        meal = Meal.objects.create(**validated_data)
-
+        meal = Meal.objects.create(created_by=self.context['request'].user, **validated_data)
         for ingredient_data in ingredients_data:
             MealIngredient.objects.create(meal=meal, **ingredient_data)
-
         return meal
-        fields = ['id', 'item', 'item_name', 'quantity_needed', 'unit']
 
