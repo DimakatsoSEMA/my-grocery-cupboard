@@ -12,6 +12,7 @@ class MealListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
 
+
 class MealRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MealSerializer
     permission_classes = [permissions.IsAuthenticated]
