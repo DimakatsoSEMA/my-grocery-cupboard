@@ -9,6 +9,7 @@ class Meal(models.Model):
         settings.AUTH_USER_MODEL,  
         on_delete=models.CASCADE
     )
+    is_favorite = models.BooleanField(default=False)  
 
     def __str__(self):
         return self.name
