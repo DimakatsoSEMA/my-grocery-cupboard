@@ -4,20 +4,26 @@ from inventory.serializers import ItemSerializer
 
 class MealIngredientSerializer(serializers.ModelSerializer):
     item = ItemSerializer(read_only=True)
+    item_id = serializers.PrimaryKeyRelatedField(
+        queryset=MealIngredient.objects.none(),  # prevent global queries
+        source='item',
+        write_only=True
+    )
 
     class Meta:
         model = MealIngredient
-        fields = ['item', 'quantity_needed', 'unit']
+        fields = ['id', 'item', 'item_id', 'quantity_needed', 'unit']
+
 
 class MealSerializer(serializers.ModelSerializer):
     ingredients = MealIngredientSerializer(source='mealingredient_set', many=True, read_only=True)
+    is_favorite = serializers.BooleanField(default=False)  
 
     class Meta:
         model = Meal
-        fields = ['id', 'name', 'ingredients', 'created_by']
+        fields = ['id', 'name', 'ingredients', 'created_by', 'is_favorite']
         read_only_fields = ['created_by']
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        meal = Meal.objects.create(created_by=user, **validated_data)
-        return meal
+        validated_data['created_by'] = self.context['request'].user
+        return super().create(validated_data)
