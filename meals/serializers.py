@@ -3,14 +3,17 @@ from .models import Meal, MealIngredient
 from inventory.models import Item
 
 class MealIngredientSerializer(serializers.ModelSerializer):
+    # Display item name in response, allow PK in requests
     item_name = serializers.CharField(source='item.name', read_only=True)
-    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())  
+    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
 
     class Meta:
         model = MealIngredient
         fields = ['id', 'item', 'item_name', 'quantity_needed', 'unit']
 
+
 class MealSerializer(serializers.ModelSerializer):
+    # Nested ingredient serializer
     ingredients = MealIngredientSerializer(many=True)
 
     class Meta:
@@ -20,8 +23,29 @@ class MealSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients', [])
+        # Create the meal with the current user
         meal = Meal.objects.create(created_by=self.context['request'].user, **validated_data)
+
+        # Create each MealIngredient
         for ingredient_data in ingredients_data:
-            MealIngredient.objects.create(meal=meal, **ingredient_data)
+            item = ingredient_data.pop('item')  # extract item instance
+            MealIngredient.objects.create(meal=meal, item=item, **ingredient_data)
+
         return meal
+
+    def update(self, instance, validated_data):
+        ingredients_data = validated_data.pop('ingredients', [])
+
+        # Update meal fields
+        instance.name = validated_data.get('name', instance.name)
+        instance.is_favorite = validated_data.get('is_favorite', instance.is_favorite)
+        instance.save()
+
+        # Clear existing ingredients and recreate
+        instance.mealingredient_set.all().delete()
+        for ingredient_data in ingredients_data:
+            item = ingredient_data.pop('item')
+            MealIngredient.objects.create(meal=instance, item=item, **ingredient_data)
+
+        return instance
 
