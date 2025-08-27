@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/', include('inventory.urls')),
     path("api/users/", include("users.urls")),
     path("api/auth/login/", obtain_auth_token, name="api-token-auth"),
+    path('api/meals/', include('meals.urls')),
 ]
