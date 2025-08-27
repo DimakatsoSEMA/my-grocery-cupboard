@@ -32,8 +32,13 @@ def grocery_list(request):
         added_by=request.user,
         quantity__lte=F('low_stock_threshold')
     )
-    serializer = ItemSerializer(low_items, many=True)
-    return Response(serializer.data)
 
+    grouped = defaultdict(list)
+    for item in low_items:
+        serializer = ItemSerializer(item)
+        grouped[item.location].append(serializer.data)
 
+    # Convert defaultdict to regular dict
+    grouped_dict = dict(grouped)
+    return Response(grouped_dict)
 
