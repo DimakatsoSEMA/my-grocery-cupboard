@@ -4,10 +4,10 @@ from inventory.models import Item
 
 class MealIngredientSerializer(serializers.ModelSerializer):
     item_name = serializers.CharField(source='item.name', read_only=True)
-    item = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all())
 
     class Meta:
         model = MealIngredient
+        fields = ['id', 'item', 'item_name', 'quantity_needed', 'unit']
 
 class MealSerializer(serializers.ModelSerializer):
     ingredients = MealIngredientSerializer(many=True)  
