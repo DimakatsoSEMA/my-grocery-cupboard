@@ -49,6 +49,7 @@ def grocery_list(request):
 from django.shortcuts import render
 from .models import Item
 from django.contrib.auth import get_user_model
+from .views import DemoItemListCreateView
 
 User = get_user_model()
 
