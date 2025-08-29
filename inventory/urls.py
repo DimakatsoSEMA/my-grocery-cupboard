@@ -4,7 +4,8 @@ from .views import (
     ItemRetrieveUpdateDeleteView,
     grocery_list,
     item_list_view,
-    grocery_list_view
+    grocery_list_view,
+    DemoItemListCreateView
 )
 
 urlpatterns = [
