@@ -46,10 +46,29 @@ def grocery_list(request):
     return Response(grouped_dict)
 
 #fRONTEND - UI
+from rest_framework import generics
+from .models import Item
+from .serializers import ItemSerializer
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class DemoItemListCreateView(generics.ListCreateAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = []  # no authentication needed
+
+    def get_queryset(self):
+        demo_user = User.objects.get(username="demo")  # always use demo user
+        return Item.objects.filter(added_by=demo_user)
+
+    def perform_create(self, serializer):
+        demo_user = User.objects.get(username="demo")
+        serializer.save(added_by=demo_user)
+
+
 from django.shortcuts import render
 from .models import Item
 from django.contrib.auth import get_user_model
-from .views import DemoItemListCreateView
 
 User = get_user_model()
 
