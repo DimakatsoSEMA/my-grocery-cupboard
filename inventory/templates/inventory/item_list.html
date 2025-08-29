@@ -45,4 +45,21 @@
 </html>
 
 
+<table>
+  <tr>
+    <th>Name</th><th>Quantity</th><th>Unit</th><th>Low Stock?</th><th>Actions</th>
+  </tr>
+  {% for item in items %}
+  <tr {% if item.quantity <= item.low_stock_threshold %} style="background-color: #fdd;" {% endif %}>
+    <td>{{ item.name }}</td>
+    <td>{{ item.quantity }}</td>
+    <td>{{ item.unit }}</td>
+    <td>{% if item.quantity <= item.low_stock_threshold %}Yes{% else %}No{% endif %}</td>
+    <td>
+      <a href="{% url 'item-update' item.id %}">Edit</a>
+      <a href="{% url 'item-delete' item.id %}">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
 
