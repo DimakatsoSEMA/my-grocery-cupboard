@@ -66,9 +66,10 @@ class DemoItemListCreateView(generics.ListCreateAPIView):
         serializer.save(added_by=demo_user)
 
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Item
 from django.contrib.auth import get_user_model
+from .forms import ItemForm 
 
 User = get_user_model()
 
@@ -105,3 +106,21 @@ def grocery_list_view(request):
         grouped_items.setdefault(item.location, []).append(item)
     
     return render(request, "inventory/grocery_list.html", {"grouped_items": grouped_items})
+
+def item_update_view(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    if request.method == "POST":
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('item-list')
+    else:
+        form = ItemForm(instance=item)
+    return render(request, "inventory/item_form.html", {"form": form})
+
+def item_delete_view(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    if request.method == "POST":
+        item.delete()
+        return redirect('item-list')
+    return render(request, "inventory/item_confirm_delete.html", {"item": item})
