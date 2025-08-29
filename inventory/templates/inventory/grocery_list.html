@@ -1,13 +1,42 @@
-<h2>Grocery List (Low Stock)</h2>
-{% for location, items in grouped_items.items %}
-  <h3>{{ location }}</h3>
-  <ul>
-    {% for item in items %}
-      <li>{{ item.name }} - {{ item.quantity }} {{ item.unit }}</li>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Low-Stock Items</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        table { width: 60%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f0f0f0; }
+        .low-stock { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Low-Stock Items</h1>
+
+    {% for location, items in grouped_items.items %}
+        <h2>{{ location }}</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Threshold</th>
+            </tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td class="low-stock">{{ item.quantity }}</td>
+                <td>{{ item.unit }}</td>
+                <td>{{ item.low_stock_threshold }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% empty %}
+        <p>No low-stock items!</p>
     {% endfor %}
-  </ul>
-{% empty %}
-  <p>No low stock items 🎉</p>
-{% endfor %}
+</body>
+</html>
+
 
 
