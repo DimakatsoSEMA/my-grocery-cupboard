@@ -13,4 +13,5 @@ urlpatterns = [
     path('grocery-list/', grocery_list, name='grocery-list'),
     path('items-ui/', item_list_view, name='item-list'),
     path('grocery-list-ui/', grocery_list_view, name='grocery-list-view'),
+    path('demo-items/', DemoItemListCreateView.as_view(), name='demo-item-list-create'),
 ]
