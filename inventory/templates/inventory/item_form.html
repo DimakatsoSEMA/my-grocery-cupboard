@@ -1,0 +1,8 @@
+<h2>Edit Item</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<a href="{% url 'item-list' %}">Back to Inventory</a>
+
