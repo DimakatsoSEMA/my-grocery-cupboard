@@ -62,3 +62,22 @@ def grocery_list_view(request):
     for item in grocery_items:
         grouped.setdefault(item.location, []).append(item)
     return render(request, "inventory/grocery_list.html", {"grouped_items": grouped})
+
+from rest_framework import generics
+from .models import Item
+from .serializers import ItemSerializer
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class DemoItemListCreateView(generics.ListCreateAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = []  # no authentication needed
+
+    def get_queryset(self):
+        demo_user = User.objects.get(username="demo")  # always use demo user
+        return Item.objects.filter(added_by=demo_user)
+
+    def perform_create(self, serializer):
+        demo_user = User.objects.get(username="demo")
+        serializer.save(added_by=demo_user)
