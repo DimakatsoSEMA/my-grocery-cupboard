@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Grocery Cupboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Grocery Cupboard</h1>
+        <nav>
+            <a href="{% url 'item-list' %}">Inventory</a> |
+            <a href="{% url 'grocery-list-view' %}">Grocery List</a>
+        </nav>
+        <hr>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
+

@@ -5,6 +5,7 @@ from .models import Item
 from .serializers import ItemSerializer
 from django.db.models import F
 from collections import defaultdict
+from django.shortcuts import render
 
 class ItemListCreateView(generics.ListCreateAPIView):
     serializer_class = ItemSerializer
@@ -43,3 +44,14 @@ def grocery_list(request):
     grouped_dict = dict(grouped)
     return Response(grouped_dict)
 
+#fRONTEND - UI
+def item_list_view(request):
+    items = Item.objects.filter(added_by=request.user)
+    return render(request, 'inventory/item_list.html', {'items': items})
+
+def grocery_list_view(request):
+    low_items = Item.objects.filter(added_by=request.user, quantity__lte=F('low_stock_threshold'))
+    grouped = {}
+    for item in low_items:
+        grouped.setdefault(item.location, []).append(item)
+    return render(request, 'inventory/grocery_list.html', {'grocery_list': grouped})

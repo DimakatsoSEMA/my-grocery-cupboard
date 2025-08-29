@@ -1,0 +1,14 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<h2>Grocery List (Low-stock Items)</h2>
+{% for location, items in grocery_list.items %}
+    <h3>{{ location }}</h3>
+    <ul>
+        {% for item in items %}
+            <li>{{ item.name }} - {{ item.quantity }} {{ item.unit }}</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+{% endblock %}
+
