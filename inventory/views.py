@@ -108,20 +108,23 @@ def grocery_list_view(request):
     
     return render(request, "inventory/grocery_list.html", {"grouped_items": grouped_items})
 
+
+# Edit/update view
 def item_update_view(request, pk):
     item = get_object_or_404(Item, pk=pk)
     if request.method == "POST":
         form = ItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('item-list')
+            return redirect("item-list")  # redirect to /items-ui/
     else:
         form = ItemForm(instance=item)
     return render(request, "inventory/item_form.html", {"form": form})
 
+# Delete view
 def item_delete_view(request, pk):
     item = get_object_or_404(Item, pk=pk)
     if request.method == "POST":
         item.delete()
-        return redirect('item-list')
+        return redirect("item-list")
     return render(request, "inventory/item_confirm_delete.html", {"item": item})
