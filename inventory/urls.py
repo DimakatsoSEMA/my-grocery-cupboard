@@ -15,4 +15,6 @@ urlpatterns = [
     path('items-ui/', item_list_view, name='item-list'),
     path('grocery-list-ui/', grocery_list_view, name='grocery-list-view'),
     path('demo-items/', DemoItemListCreateView.as_view(), name='demo-item-list-create'),
+    path('items/<int:pk>/edit/', item_update_view, name='item-update'),
+    path('items/<int:pk>/delete/', item_delete_view, name='item-delete'),
 ]
