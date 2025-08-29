@@ -1,8 +1,48 @@
-<h2>Inventory</h2>
-<ul>
-  {% for item in items %}
-    <li>{{ item.name }} - {{ item.quantity }} {{ item.unit }} ({{ item.location }})</li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Full Inventory</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        table { width: 60%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f0f0f0; }
+        .low-stock { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Full Inventory</h1>
+
+    {% for location, items in grouped_items.items %}
+        <h2>{{ location }}</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Low Stock?</th>
+            </tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unit }}</td>
+                <td>
+                    {% if item.is_low_stock %}
+                        <span class="low-stock">Yes</span>
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% empty %}
+        <p>No items in inventory.</p>
+    {% endfor %}
+</body>
+</html>
+
 
 
