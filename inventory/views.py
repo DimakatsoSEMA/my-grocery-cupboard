@@ -46,38 +46,42 @@ def grocery_list(request):
     return Response(grouped_dict)
 
 #fRONTEND - UI
-User = get_user_model()
-
-def item_list_view(request):
-    demo_user = User.objects.get(username="demo")  # default user
-    items = Item.objects.filter(added_by=demo_user)
-    return render(request, "inventory/item_list.html", {"items": items})
-
-
-def grocery_list_view(request):
-    demo_user = User.objects.get(username="demo")  # default user
-    grocery_items = Item.objects.filter(added_by=demo_user, low_stock=True)
-    # grouped by location for neatness
-    grouped = {}
-    for item in grocery_items:
-        grouped.setdefault(item.location, []).append(item)
-    return render(request, "inventory/grocery_list.html", {"grouped_items": grouped})
-
-from rest_framework import generics
+from django.shortcuts import render
 from .models import Item
-from .serializers import ItemSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class DemoItemListCreateView(generics.ListCreateAPIView):
-    serializer_class = ItemSerializer
-    permission_classes = []  # no authentication needed
+def item_list_view(request):
+    """
+    View for /items-ui/
+    Shows all items for the demo user, grouped by location
+    """
+    demo_user = User.objects.get(username="demo")  # built-in demo user
+    items = Item.objects.filter(added_by=demo_user)
+    
+    # Optional: group by location for better display
+    grouped_items = {}
+    for item in items:
+        grouped_items.setdefault(item.location, []).append(item)
+    
+    return render(request, "inventory/item_list.html", {"grouped_items": grouped_items})
 
-    def get_queryset(self):
-        demo_user = User.objects.get(username="demo")  # always use demo user
-        return Item.objects.filter(added_by=demo_user)
 
-    def perform_create(self, serializer):
-        demo_user = User.objects.get(username="demo")
-        serializer.save(added_by=demo_user)
+def grocery_list_view(request):
+    """
+    View for /grocery-list-ui/
+    Shows low-stock items for the demo user, grouped by location
+    """
+    demo_user = User.objects.get(username="demo")  # built-in demo user
+    all_items = Item.objects.filter(added_by=demo_user)
+    
+    # Filter low-stock items using the model property
+    low_stock_items = [item for item in all_items if item.is_low_stock]
+    
+    # Group by location
+    grouped_items = {}
+    for item in low_stock_items:
+        grouped_items.setdefault(item.location, []).append(item)
+    
+    return render(request, "inventory/grocery_list.html", {"grouped_items": grouped_items})
