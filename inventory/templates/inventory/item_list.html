@@ -1,26 +1,8 @@
-{% extends 'inventory/base.html' %}
-
-{% block content %}
 <h2>Inventory</h2>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Unit</th>
-        <th>Location</th>
-        <th>Low Stock Threshold</th>
-        <th>Low Stock?</th>
-    </tr>
-    {% for item in items %}
-    <tr>
-        <td>{{ item.name }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.unit }}</td>
-        <td>{{ item.location }}</td>
-        <td>{{ item.low_stock_threshold }}</td>
-        <td>{{ item.is_low_stock }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% endblock %}
+<ul>
+  {% for item in items %}
+    <li>{{ item.name }} - {{ item.quantity }} {{ item.unit }} ({{ item.location }})</li>
+  {% endfor %}
+</ul>
+
 

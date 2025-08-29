@@ -1,14 +1,13 @@
-{% extends 'inventory/base.html' %}
-
-{% block content %}
-<h2>Grocery List (Low-stock Items)</h2>
-{% for location, items in grocery_list.items %}
-    <h3>{{ location }}</h3>
-    <ul>
-        {% for item in items %}
-            <li>{{ item.name }} - {{ item.quantity }} {{ item.unit }}</li>
-        {% endfor %}
-    </ul>
+<h2>Grocery List (Low Stock)</h2>
+{% for location, items in grouped_items.items %}
+  <h3>{{ location }}</h3>
+  <ul>
+    {% for item in items %}
+      <li>{{ item.name }} - {{ item.quantity }} {{ item.unit }}</li>
+    {% endfor %}
+  </ul>
+{% empty %}
+  <p>No low stock items 🎉</p>
 {% endfor %}
-{% endblock %}
+
 
