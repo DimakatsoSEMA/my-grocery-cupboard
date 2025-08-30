@@ -1,4 +1,5 @@
 🛒 My Grocery Cupboard
+
 A pantry management and meal planning application designed to help users keep track of their food inventory, avoid waste, and simplify grocery shopping. The system notifies users about low or out-of-stock items, suggests grocery lists, recommends food swaps, and organizes storage areas like fridge, freezer, and cupboard.
 
 🚀 Features
