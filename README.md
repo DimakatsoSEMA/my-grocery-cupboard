@@ -1,13 +1,10 @@
 🛒 My Grocery Cupboard
-My Grocery Cupboard is a pantry management and meal planning application designed to help users keep track of their food inventory, avoid waste, and simplify grocery shopping. The system notifies users about low or out-of-stock items, suggests grocery lists, recommends food swaps, and organizes storage areas like fridge, freezer, and cupboard.
+A pantry management and meal planning application designed to help users keep track of their food inventory, avoid waste, and simplify grocery shopping. The system notifies users about low or out-of-stock items, suggests grocery lists, recommends food swaps, and organizes storage areas like fridge, freezer, and cupboard.
 
 🚀 Features
 •	Inventory Management – Track pantry items, quantities, and categories (fridge, freezer, cupboard).
 •	Low Stock Alerts – Get notified when items are running low or out of stock.
-•	Meal Favorites – Save and organize favorite meals for easy access.
-•	Grocery List Generator – Automatically generate shopping lists based on your inventory.
 •	Food Swaps – Get suggestions for ingredient substitutions.
-•	Organized Storage – Categorize and locate items quickly across different storage areas.
 
 🛠️ Tech Stack
 •	Backend: Django & Django REST Framework
@@ -48,6 +45,9 @@ ________________________________________
 ✅ Barcode scanning for faster inventory updates
 ✅ API endpoints for mobile app integration
 ✅ Docker & CI/CD setup for deployment
+✅ Meal Favorites – Save and organize favorite meals for easy access.
+✅ Grocery List Generator – Automatically generate shopping lists based on your inventory.
+✅ Organized Storage – Categorize and locate items quickly across different storage areas.
 ________________________________________
 📜 License
 This project is licensed under the MIT License – see the LICENSE file for details.
